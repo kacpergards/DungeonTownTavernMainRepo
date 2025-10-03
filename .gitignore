@@ -1,0 +1,11 @@
+.git
+.vscode
+Library
+Library/*
+Logs
+Logs/*
+Temp
+ProjectSettings/ProjectVersion.txt
+Assembly-CSharp.csproj
+Packages/manifest.json
+Unity*
