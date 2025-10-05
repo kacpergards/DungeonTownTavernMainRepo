@@ -1,0 +1,22 @@
+Dialogue:
+    - Unify dialogue and inventory/menus into menuManager - maybe?
+    - NPC interact behaviour (e.g. entering dialogue) should be handled on the NPC - calling menu manager to show dialogue etc
+        - Define npc dialogue & specific behaviours on the NPC, generic behaviours (showing dialogue, entering battle) on a Framework component
+    - Better dialogue - smoother text, selecting dialogue options, etc.
+        - Decide whether dialogue-initiated events should happen on the menu manager or somewhere else
+            - Suggest: Menu manager handles showing, closing, shops, state management of menus. Game controller handles events - battle, scene transitions
+
+Shopping:
+    - Shop menu
+        - Shop inventory - should be the shopkeep NPC inventory? Or separate?
+    - Buying
+    - Selling
+
+NPCs:
+    - Movement
+        - Define NPC paths. Passive movement when not interacting with the player. Basic for now.
+    - NPC interactions with world - speak to other NPC's etc. 
+
+Player:
+    - More satisfying movement. Clean and responsive. Jumping.
+    - Attacking - just fun. Break pots for rupees etc.

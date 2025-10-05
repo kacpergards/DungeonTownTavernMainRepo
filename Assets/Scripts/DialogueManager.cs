@@ -9,6 +9,11 @@ public class DialogueManager : MonoBehaviour
     [SerializeField] GameObject dialogueBox;
     [SerializeField] Text dialogueText;
     [SerializeField] int lettersPerSecond;
+    [SerializeField] int currentLine;
+
+    Dialogue dialogue;
+    public bool dialogueOpened;
+    public bool isTyping;
 
     public event Action OnShowDialogue;
     public event Action OnHideDialogue;
@@ -18,13 +23,15 @@ public class DialogueManager : MonoBehaviour
     private void Awake()
     {
         Instance = this;
+        currentLine = 0;
+        isTyping = false;
+        dialogueOpened = false;
     }
 
-    Dialogue dialogue;
-    int currentLine = 0;
-    bool isTyping;
+    //Player controller - 
     
 
+    // Invoked by dialogue initiator - NPC
     public IEnumerator ShowDialogue(Dialogue dialogue)
     {
         yield return new WaitForEndOfFrame();
@@ -32,7 +39,7 @@ public class DialogueManager : MonoBehaviour
         OnShowDialogue?.Invoke();
 
         this.dialogue = dialogue;
-        dialogueBox.SetActive(true); 
+        dialogueBox.SetActive(true);
         StartCoroutine(TypeDialogue(dialogue.Lines[0]));
     }
 

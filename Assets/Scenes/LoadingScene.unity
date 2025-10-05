@@ -998,6 +998,30 @@ PrefabInstance:
       propertyPath: dialogueManager
       value: 
       objectReference: {fileID: 1840301860}
+    - target: {fileID: 2959181156875805120, guid: 00ec1075d2cc80c44aad25cc431b9064, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 1402688830, guid: 2e5e621b0cd524946bfad07196f37f3d, type: 3}
+    - target: {fileID: 2959181156875805120, guid: 00ec1075d2cc80c44aad25cc431b9064, type: 3}
+      propertyPath: m_Color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2959181156875805120, guid: 00ec1075d2cc80c44aad25cc431b9064, type: 3}
+      propertyPath: m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2959181156875805120, guid: 00ec1075d2cc80c44aad25cc431b9064, type: 3}
+      propertyPath: m_Color.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2959181156875805120, guid: 00ec1075d2cc80c44aad25cc431b9064, type: 3}
+      propertyPath: m_MaskInteraction
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2959181156875805120, guid: 00ec1075d2cc80c44aad25cc431b9064, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
     - target: {fileID: 6336931200865481949, guid: 00ec1075d2cc80c44aad25cc431b9064, type: 3}
       propertyPath: m_Name
       value: Player
