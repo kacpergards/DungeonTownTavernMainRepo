@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "HealAction", menuName = "Items/Actions/Use")]
+[CreateAssetMenu(fileName = "UseAction", menuName = "Items/Actions/Use")]
 public class UseAction : ItemAction
 {
 

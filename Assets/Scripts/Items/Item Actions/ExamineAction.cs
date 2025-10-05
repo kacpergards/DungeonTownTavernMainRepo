@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "HealAction", menuName = "Items/Actions/ExamineItem")]
+[CreateAssetMenu(fileName = "ExamineAction", menuName = "Items/Actions/ExamineItem")]
 public class ExamineAction : ItemAction
 {
 
@@ -10,7 +10,7 @@ public class ExamineAction : ItemAction
     }
     public override void Execute(BaseItem item)
     {
-        Debug.Log("Executed");
+        Debug.Log($"It's a {item.itemName}!");
     }
 
     public void someActualLogic(GameObject EnemyOrAnotherItemEtc) {

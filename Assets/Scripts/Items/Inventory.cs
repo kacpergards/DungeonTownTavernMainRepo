@@ -11,12 +11,12 @@ public class Inventory : MonoBehaviour
 
     void Awake()
     {
-        BaseItem[] items = Resources.LoadAll<BaseItem>("Item Assets");
+        /*BaseItem[] items = Resources.LoadAll<BaseItem>("Item Assets");
         foreach (BaseItem item in items)
         {
             AddItem(item, 1);
             Debug.Log("Added item " + item.itemName);
-        }
+        }*/
     }
 
     public void AddItem(BaseItem newItem, int count = 1)
