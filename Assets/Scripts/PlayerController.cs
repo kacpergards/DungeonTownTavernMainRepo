@@ -4,7 +4,7 @@ using UnityEngine.InputSystem;
 public class PlayerController : MonoBehaviour
 {
 
-    private PlayerInputActions playerInputActions;
+    
     private Vector2 moveInput;
     private CapsuleCollider playerCollider;
 
@@ -29,24 +29,50 @@ public class PlayerController : MonoBehaviour
     Rigidbody body;
     bool onGround = false;
     public GameObject BobberGO;
+
+
+    private PlayerInputActions playerInputActions;
+    private InputActionMap previousMap; // Holds previous action map to handle e.g. switching back to dialogue map after closing menu
     public DialogueManager dialogueManager;
+    public MenuManager menuManager;
 
     void Awake()
     {
-        // Actions must be registered in awake as it runs before gameobject enabled
+        //This is a really nice pattern and much better than what was here before.
+        //However! It is arguable that this additionally should be abstracted to a top-level InputManager
+        //Player, MenuManager, and DialogueManager would then subscribe to events from the InputManager
+        //As it is, PlayerController handles physics, animations, player state - as well as Player World Input, and Switching of the action set to Menu, Dialogue, World
+        //MenuManager and DialogueManager do handle their own inputs via their SubscribeToEvents functions.
+        //This is fine for now, but keep this in mind.
+
+        // Actions must be registered in awake
         playerInputActions = new PlayerInputActions();
+        menuManager.SubscribeToEvents(playerInputActions);
+        dialogueManager.SubscribeToEvents(playerInputActions);
+
+        // Set worldactions as default action set
+        playerInputActions.PlayerWorldActions.Enable();
 
         // Player movement - opting to subscribe to events directly for clarity
         playerInputActions.PlayerWorldActions.move.performed += OnMoveInput;
         playerInputActions.PlayerWorldActions.move.canceled += OnMoveCanceled;
         playerInputActions.PlayerWorldActions.jump.performed += OnJump;
 
-        //Player Interact - no need to handle interact cancel right now
+        //Player interact
         playerInputActions.PlayerWorldActions.interact.performed += OnInteract;
 
-        //Player fish - as with interact^^
+        //Player fish
         playerInputActions.PlayerWorldActions.throwBobber.performed += OnThrowBobber;
+
+        // Subscribe to dialogue open/close events to handle input switching
+        dialogueManager.OnShowDialogue += DialogueOpened;
+        dialogueManager.OnHideDialogue += DialogueClosed;
+
+        // Subscribe to menu open/close events to handle input switching
+        menuManager.OnShowMenu += MenuOpened;
+        menuManager.OnHideMenu += MenuClosed;
     }
+
     void Start()
     {
         interactableLayerMask = LayerMask.GetMask("Interactable");
@@ -59,8 +85,7 @@ public class PlayerController : MonoBehaviour
         BobberGO = Resources.Load<GameObject>("Prefabs/Bobber");
     }
 
-    private void OnEnable() => playerInputActions.Enable();
-    private void OnDisable() => playerInputActions.Disable();
+    private void OnDisable() => playerInputActions.Disable(); // Disable all inputmaps if we disable the player (e.g. cutscene maybe)
 
     private void OnMoveInput(InputAction.CallbackContext ctx)
     {
@@ -71,7 +96,7 @@ public class PlayerController : MonoBehaviour
     }
     private void OnInteract(InputAction.CallbackContext ctx)
     {
-        Interact();
+        TryInteract();
     }
     private void OnThrowBobber(InputAction.CallbackContext ctx)
     {
@@ -87,15 +112,71 @@ public class PlayerController : MonoBehaviour
         body.AddForce(Vector3.up * 200f, ForceMode.Acceleration);
     }
 
+    private void DialogueOpened()
+    {
+        SwitchActionMap(playerInputActions.PlayerDialogueActions);
+    }
+    private void DialogueClosed()
+    {
+        if (!RestorePreviousActionMap())
+        {
+            // I should have used a stack for this
+            // Menu can be opened over dialogue
+            // Therefore an edge case where we go World -> Dialogue -> Menu (Previous set: dialogue, current: menu), Close Menu (restore previous set), close dialogue (previous set now null so error)
+            // cba fixing so if in doubt, switch to world actions. Fix if we create more states so it doesn't get unmanageable
+            SwitchActionMap(playerInputActions.PlayerWorldActions);
+        }
+    }
+    private void MenuOpened()
+    {
+        SwitchActionMap(playerInputActions.PlayerMenuActions);
+    }
+    private void MenuClosed()
+    {
+        RestorePreviousActionMap(); //Could be world or dialogue
+    }
+    private InputActionMap GetCurrentMap()
+    {
+        if (playerInputActions.PlayerWorldActions.enabled) return playerInputActions.PlayerWorldActions;
+        if (playerInputActions.PlayerDialogueActions.enabled) return playerInputActions.PlayerDialogueActions;
+        if (playerInputActions.PlayerMenuActions.enabled) return playerInputActions.PlayerMenuActions;
+        return null;
+    }
+
+    private void SwitchActionMap(InputActionMap newMap)
+    {
+        //Debug.Log("Switching to actionMap "+newMap.name);
+        previousMap = GetCurrentMap();
+        GetCurrentMap()?.Disable();
+        newMap.Enable();
+    }
+    private bool RestorePreviousActionMap()
+    {
+        if (previousMap != null)
+        {
+            //Debug.Log("Switching to actionMap "+previousMap.name);
+            GetCurrentMap()?.Disable();
+            previousMap.Enable();
+            previousMap = null;
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+
     void Update()
     {
         HandleMovementAndCalculateDirection();
 
         UpdatePlayerOnGroundStatus();   //Calling this every frame presents a minor performance hit, but allows us to detect non-player-initiated mid-air status
                                         // e.g. if they fall off a cliff
+                                        // TODO Move this to fixedUpdate? Less of a hit
     }
 
-    void HandleMovementAndCalculateDirection()
+    private void HandleMovementAndCalculateDirection()
     {
         if (moveInput != Vector2.zero)
         {
@@ -116,7 +197,7 @@ public class PlayerController : MonoBehaviour
         gameObject.transform.position = new Vector3(transform.position.x + (movement.x  * speed * Time.deltaTime), transform.position.y, transform.position.z + (movement.y *  speed * Time.deltaTime));
     }
 
-    void UpdatePlayerOnGroundStatus()
+    private void UpdatePlayerOnGroundStatus()
     {
         Vector3 bottom = transform.position + playerCollider.center - Vector3.up * (playerCollider.height / 2f);
         Vector3 rayOrigin = bottom + Vector3.up * 0.01f;
@@ -134,22 +215,18 @@ public class PlayerController : MonoBehaviour
     );
     //Debug.DrawRay(rayOrigin, Vector3.down * (0.1f), hit ? Color.green : Color.red);
     }
-    void Interact()
+    void TryInteract()
     { //Combining checking and interact logic for now. If in future we want to e.g. display the interact options before interacting we should split out
-   
+        //Debug.Log("Player tried to interact");
         RaycastHit hit;
         if (Physics.Raycast(transform.position, direction, out hit, checkDistance, interactableLayerMask))
-        {
-            if (hit.collider.gameObject.CompareTag("NPC"))
-            { //TODO refactor to use generic Interactable, move logic to the interactable itself
-                NPCController npc = hit.collider.GetComponent<NPCController>();
-                npc.OnDetected();
-                StartCoroutine(dialogueManager.ShowDialogue(npc.dialogue));
-            }
+        { //i.e. If we hit something that's on the interactable layer
+            Interactable thing = hit.collider.GetComponent<Interactable>(); //This will be the first thing the ray hits.
+            thing?.Interact(this);
         }
- 
-        directionRaycast = new Vector3(direction.x*1000, direction.y*0, direction.z * 1000);
-        Debug.DrawRay(transform.position, directionRaycast * checkDistance, Color.red);
+
+        //directionRaycast = new Vector3(direction.x*1000, direction.y*0, direction.z * 1000);
+        //Debug.DrawRay(transform.position, directionRaycast * checkDistance, Color.red);
     }
 
     public void Fish()
@@ -164,5 +241,4 @@ public class PlayerController : MonoBehaviour
         Bobber_rb.isKinematic = false;
         Bobber_rb.AddForce(directionBobber * castDist, ForceMode.Impulse);
     }
-
 }

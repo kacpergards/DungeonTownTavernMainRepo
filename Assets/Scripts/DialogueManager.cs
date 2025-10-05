@@ -1,8 +1,8 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.InputSystem;
 
 public class DialogueManager : MonoBehaviour
 {
@@ -12,64 +12,75 @@ public class DialogueManager : MonoBehaviour
     [SerializeField] int currentLine;
 
     Dialogue dialogue;
-    public bool dialogueOpened;
-    public bool isTyping;
+    private Coroutine typeCoroutine;
 
     public event Action OnShowDialogue;
     public event Action OnHideDialogue;
 
     public static DialogueManager Instance { get; private set; }
 
+    public void SubscribeToEvents(PlayerInputActions inputActions)
+    { //Required to avoid 'race' condition
+        inputActions.PlayerDialogueActions.proceed.performed += OnProceedInput;
+    }
+
     private void Awake()
     {
         Instance = this;
         currentLine = 0;
-        isTyping = false;
-        dialogueOpened = false;
     }
 
-    //Player controller - 
-    
+    private void OnProceedInput(InputAction.CallbackContext ctx)
+    {
+        HandleUpdate();
+    }
 
-    // Invoked by dialogue initiator - NPC
+    private void StopTypeCoroutineIfExists() { if (typeCoroutine != null) { StopCoroutine(typeCoroutine); } typeCoroutine = null; }
+
+
+    // Invoked by dialogue initiator - NPC - Interact() function
+    // Therefore, as we switch action sets immediately, this cannot be called while a dialogue is in progress
     public IEnumerator ShowDialogue(Dialogue dialogue)
     {
         yield return new WaitForEndOfFrame();
 
         OnShowDialogue?.Invoke();
 
-        this.dialogue = dialogue;
-        dialogueBox.SetActive(true);
-        StartCoroutine(TypeDialogue(dialogue.Lines[0]));
+        this.dialogue = dialogue; // Move to OnShowDialogue subscription?
+        dialogueBox.SetActive(true); //^
+
+        StopTypeCoroutineIfExists();
+        typeCoroutine = StartCoroutine(TypeDialogue(dialogue.Lines[0]));
     }
+
+
 
     public void HandleUpdate()
     {
-        if (Input.GetKeyDown(KeyCode.Z) && !isTyping)
+        currentLine++;
+        if (currentLine < dialogue.Lines.Count)
         {
-            ++currentLine;
-            if (currentLine < dialogue.Lines.Count)
-            {
-                StartCoroutine(TypeDialogue(dialogue.Lines[currentLine]));
-            }
-            else
-            {
-                dialogueBox.SetActive(false);
-                currentLine = 0;
-                OnHideDialogue?.Invoke();
-            }
+            StopTypeCoroutineIfExists();
+            typeCoroutine = StartCoroutine(TypeDialogue(dialogue.Lines[currentLine]));
+        }
+        else
+        {
+            dialogueBox.SetActive(false);
+            currentLine = 0;
+            StopTypeCoroutineIfExists();
+            dialogueText.text = "";
+            OnHideDialogue?.Invoke();
         }
     }
 
     public IEnumerator TypeDialogue(string line)
     {
-        isTyping = true;
         dialogueText.text = "";
         foreach (var letter in line.ToCharArray())
         {
             dialogueText.text += letter;
             yield return new WaitForSeconds(1f / lettersPerSecond);
         }
-        isTyping = false;
+        typeCoroutine = null;
     }
 }

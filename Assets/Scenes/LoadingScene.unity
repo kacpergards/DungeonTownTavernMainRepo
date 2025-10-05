@@ -383,6 +383,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: DialogueBox
       objectReference: {fileID: 0}
+    - target: {fileID: 3635539567968698948, guid: ccfc0576b691a1344b05cb80591b6216, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -402,11 +406,6 @@ MonoBehaviour:
 --- !u!224 &685400522 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 3416672057673940299, guid: ccfc0576b691a1344b05cb80591b6216, type: 3}
-  m_PrefabInstance: {fileID: 685400520}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &685400523 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1987758517671317172, guid: ccfc0576b691a1344b05cb80591b6216, type: 3}
   m_PrefabInstance: {fileID: 685400520}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &791667891
@@ -821,6 +820,11 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 10000
   m_TargetDisplay: 0
+--- !u!1 &1786872123 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3635539567968698948, guid: ccfc0576b691a1344b05cb80591b6216, type: 3}
+  m_PrefabInstance: {fileID: 685400520}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1840301857
 GameObject:
   m_ObjectHideFlags: 0
@@ -880,9 +884,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2cf26d66ffd5d974d8240e74c8d81f08, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dialogueBox: {fileID: 685400523}
+  dialogueBox: {fileID: 1786872123}
   dialogueText: {fileID: 685400521}
   lettersPerSecond: 7
+  currentLine: 0
 --- !u!1 &1955055642
 GameObject:
   m_ObjectHideFlags: 0
@@ -994,6 +999,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 623655030453206247, guid: 00ec1075d2cc80c44aad25cc431b9064, type: 3}
+      propertyPath: menuManager
+      value: 
+      objectReference: {fileID: 1840301859}
     - target: {fileID: 623655030453206247, guid: 00ec1075d2cc80c44aad25cc431b9064, type: 3}
       propertyPath: dialogueManager
       value: 

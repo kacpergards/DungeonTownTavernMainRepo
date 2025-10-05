@@ -1,5 +1,6 @@
 Dialogue:
     - Unify dialogue and inventory/menus into menuManager - maybe?
+        - Starting to disagree on this point. but we'll see where things end up.
     - NPC interact behaviour (e.g. entering dialogue) should be handled on the NPC - calling menu manager to show dialogue etc
         - Define npc dialogue & specific behaviours on the NPC, generic behaviours (showing dialogue, entering battle) on a Framework component
     - Better dialogue - smoother text, selecting dialogue options, etc.
@@ -18,5 +19,11 @@ NPCs:
     - NPC interactions with world - speak to other NPC's etc. 
 
 Player:
-    - More satisfying movement. Clean and responsive. Jumping.
     - Attacking - just fun. Break pots for rupees etc.
+
+Input:
+    - Refactor subscriptions such that an InputManager class handles all input.
+        - Player controller, Menu manager, Dialogue Manager then all subscribe to events emitted from InputManager
+        - It's not a super major concern but it would be cleaner. Stuff like Menu manager needing to sub to the playerworldactions.menuopen input is smelly - but doesn't impact performance or manageability (too much).
+            - the alternative for this would have been the playercontroller handling menu open - which is even stinkier imo.
+        - It may become a bigger concern when we do shops, battles, etc. Not too sure. Vibe it out.

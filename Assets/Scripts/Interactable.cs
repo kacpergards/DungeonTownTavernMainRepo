@@ -1,8 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
+// All interactable objects should implement this
 public interface Interactable
 {
-    void Interact();
+    void Interact(PlayerController player);
 }
