@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class NPCController : MonoBehaviour, Interactable
 {
-    [SerializeField] private Dialogue dialogue;
+    [SerializeField] public Dialogue dialogue;
 
     public void Interact(PlayerController player)
     {

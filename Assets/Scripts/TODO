@@ -27,3 +27,9 @@ Input:
         - It's not a super major concern but it would be cleaner. Stuff like Menu manager needing to sub to the playerworldactions.menuopen input is smelly - but doesn't impact performance or manageability (too much).
             - the alternative for this would have been the playercontroller handling menu open - which is even stinkier imo.
         - It may become a bigger concern when we do shops, battles, etc. Not too sure. Vibe it out.
+
+
+DialogueOptions:
+    - Class to handle spawning of dialogue options
+    - Listen on dialogueOptionUp, dialogueOptionDown, proceed to handle dialogue option selection
+    

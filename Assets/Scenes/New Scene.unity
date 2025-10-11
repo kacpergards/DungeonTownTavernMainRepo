@@ -10240,10 +10240,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dc70de72338a29b4193e6b1e12e76b6f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dialogue:
-    lines:
-    - Dialogue is working now
-    - My life is still sad
+  dialogue: {fileID: 11400000, guid: 16f6369f25125554c819db4e5b40bfde, type: 2}
 --- !u!95 &512812468
 Animator:
   serializedVersion: 5

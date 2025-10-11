@@ -2,13 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[System.Serializable
-]
-public class Dialogue 
-{
-    [SerializeField] List<string> lines;
+[CreateAssetMenu(fileName = "Dialogue", menuName = "Dialogue/Dialogue")]
+public class Dialogue : ScriptableObject {
+    public List<DialogueLine> lines = new List<DialogueLine>();
 
-    public List<string> Lines
+    public List<DialogueLine> Lines
     {
         get { return lines; }
     }

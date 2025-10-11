@@ -580,6 +580,14 @@ PrefabInstance:
       propertyPath: inventory
       value: 
       objectReference: {fileID: 1983294904}
+    - target: {fileID: 3349334018782198775, guid: 86eb4194aafcccf46bd5f9fda11ba26a, type: 3}
+      propertyPath: m_Padding.m_Top
+      value: 116
+      objectReference: {fileID: 0}
+    - target: {fileID: 3349334018782198775, guid: 86eb4194aafcccf46bd5f9fda11ba26a, type: 3}
+      propertyPath: m_Padding.m_Left
+      value: 106
+      objectReference: {fileID: 0}
     - target: {fileID: 5352284563543919492, guid: 86eb4194aafcccf46bd5f9fda11ba26a, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 2.6407597
@@ -877,6 +885,7 @@ MonoBehaviour:
   dialogueText: {fileID: 685400521}
   lettersPerSecond: 7
   currentLine: 0
+  dialogueOptionAsset: {fileID: 7245623975150922130, guid: f4e6e5da8fb533a4d963be1535ba0bb1, type: 3}
 --- !u!1001 &1983294896
 PrefabInstance:
   m_ObjectHideFlags: 0

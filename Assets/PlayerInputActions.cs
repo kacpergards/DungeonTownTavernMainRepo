@@ -207,6 +207,24 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""dialogueOptionUp"",
+                    ""type"": ""Button"",
+                    ""id"": ""4e689949-c8f4-4abc-a8de-5c6108e15064"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""dialogueOptionDown"",
+                    ""type"": ""Button"",
+                    ""id"": ""5f073289-7e0e-45cf-949d-e9e07e223c54"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -240,6 +258,28 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""menuOpen"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""58f4082d-8bd7-4f74-b1af-fdc2cc97ca4d"",
+                    ""path"": ""<Keyboard>/w"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""dialogueOptionUp"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b622fbed-9215-4b9b-af7e-2a300f30073b"",
+                    ""path"": ""<Keyboard>/s"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""dialogueOptionDown"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -459,6 +499,8 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         m_PlayerDialogueActions = asset.FindActionMap("PlayerDialogueActions", throwIfNotFound: true);
         m_PlayerDialogueActions_proceed = m_PlayerDialogueActions.FindAction("proceed", throwIfNotFound: true);
         m_PlayerDialogueActions_menuOpen = m_PlayerDialogueActions.FindAction("menuOpen", throwIfNotFound: true);
+        m_PlayerDialogueActions_dialogueOptionUp = m_PlayerDialogueActions.FindAction("dialogueOptionUp", throwIfNotFound: true);
+        m_PlayerDialogueActions_dialogueOptionDown = m_PlayerDialogueActions.FindAction("dialogueOptionDown", throwIfNotFound: true);
         // PlayerMenuActions
         m_PlayerMenuActions = asset.FindActionMap("PlayerMenuActions", throwIfNotFound: true);
         m_PlayerMenuActions_close = m_PlayerMenuActions.FindAction("close", throwIfNotFound: true);
@@ -608,12 +650,16 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     private List<IPlayerDialogueActionsActions> m_PlayerDialogueActionsActionsCallbackInterfaces = new List<IPlayerDialogueActionsActions>();
     private readonly InputAction m_PlayerDialogueActions_proceed;
     private readonly InputAction m_PlayerDialogueActions_menuOpen;
+    private readonly InputAction m_PlayerDialogueActions_dialogueOptionUp;
+    private readonly InputAction m_PlayerDialogueActions_dialogueOptionDown;
     public struct PlayerDialogueActionsActions
     {
         private @PlayerInputActions m_Wrapper;
         public PlayerDialogueActionsActions(@PlayerInputActions wrapper) { m_Wrapper = wrapper; }
         public InputAction @proceed => m_Wrapper.m_PlayerDialogueActions_proceed;
         public InputAction @menuOpen => m_Wrapper.m_PlayerDialogueActions_menuOpen;
+        public InputAction @dialogueOptionUp => m_Wrapper.m_PlayerDialogueActions_dialogueOptionUp;
+        public InputAction @dialogueOptionDown => m_Wrapper.m_PlayerDialogueActions_dialogueOptionDown;
         public InputActionMap Get() { return m_Wrapper.m_PlayerDialogueActions; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -629,6 +675,12 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @menuOpen.started += instance.OnMenuOpen;
             @menuOpen.performed += instance.OnMenuOpen;
             @menuOpen.canceled += instance.OnMenuOpen;
+            @dialogueOptionUp.started += instance.OnDialogueOptionUp;
+            @dialogueOptionUp.performed += instance.OnDialogueOptionUp;
+            @dialogueOptionUp.canceled += instance.OnDialogueOptionUp;
+            @dialogueOptionDown.started += instance.OnDialogueOptionDown;
+            @dialogueOptionDown.performed += instance.OnDialogueOptionDown;
+            @dialogueOptionDown.canceled += instance.OnDialogueOptionDown;
         }
 
         private void UnregisterCallbacks(IPlayerDialogueActionsActions instance)
@@ -639,6 +691,12 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @menuOpen.started -= instance.OnMenuOpen;
             @menuOpen.performed -= instance.OnMenuOpen;
             @menuOpen.canceled -= instance.OnMenuOpen;
+            @dialogueOptionUp.started -= instance.OnDialogueOptionUp;
+            @dialogueOptionUp.performed -= instance.OnDialogueOptionUp;
+            @dialogueOptionUp.canceled -= instance.OnDialogueOptionUp;
+            @dialogueOptionDown.started -= instance.OnDialogueOptionDown;
+            @dialogueOptionDown.performed -= instance.OnDialogueOptionDown;
+            @dialogueOptionDown.canceled -= instance.OnDialogueOptionDown;
         }
 
         public void RemoveCallbacks(IPlayerDialogueActionsActions instance)
@@ -763,6 +821,8 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     {
         void OnProceed(InputAction.CallbackContext context);
         void OnMenuOpen(InputAction.CallbackContext context);
+        void OnDialogueOptionUp(InputAction.CallbackContext context);
+        void OnDialogueOptionDown(InputAction.CallbackContext context);
     }
     public interface IPlayerMenuActionsActions
     {
