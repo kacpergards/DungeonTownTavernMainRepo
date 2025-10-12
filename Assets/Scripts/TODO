@@ -1,11 +1,17 @@
 Dialogue:
-    - Unify dialogue and inventory/menus into menuManager - maybe?
-        - Starting to disagree on this point. but we'll see where things end up.
-    - NPC interact behaviour (e.g. entering dialogue) should be handled on the NPC - calling menu manager to show dialogue etc
-        - Define npc dialogue & specific behaviours on the NPC, generic behaviours (showing dialogue, entering battle) on a Framework component
-    - Better dialogue - smoother text, selecting dialogue options, etc.
-        - Decide whether dialogue-initiated events should happen on the menu manager or somewhere else
-            - Suggest: Menu manager handles showing, closing, shops, state management of menus. Game controller handles events - battle, scene transitions
+    - Branching dialogue
+        - Another abstraction - instead of a List of dialogue lines, Dialogue should hold a List of dialogue branches.
+        - Branch 0 is the entry - "Hi, do you prefer cars or flowers?" Options "Cars". "Flowers"
+            - Branch 1 would be cars "Which type of car?" Options "Miata". "Polo"
+            - Branch 2 would be flowers "Which flower"? etc
+        - Requires a minor rewrite, nothing too major until much dialogue is defined.
+    - String abstraction
+        - I know you (Kacper) want to be able to define all dialogue in the unity inspector...
+        - But the correct pattern here is to abstract all that out into a separate file
+        - I know its unlikely, but if we would ever need to tackle translation into other languages, this would be impossible without a major rewrite
+            - If in a file, you just say if language=Mandarin, load strings-mandarin.json. If language=spanish... etc
+        - Also with things like branching dialogue, or another change to the core dialogue system. Inspector values don't persist if we change it from a List of dialogue lines.
+        - Therefore, this needs to be done... at some point. Not an immediate priority until things start looking like an actual game.
 
 Shopping:
     - Shop menu
@@ -29,7 +35,4 @@ Input:
         - It may become a bigger concern when we do shops, battles, etc. Not too sure. Vibe it out.
 
 
-DialogueOptions:
-    - Class to handle spawning of dialogue options
-    - Listen on dialogueOptionUp, dialogueOptionDown, proceed to handle dialogue option selection
     

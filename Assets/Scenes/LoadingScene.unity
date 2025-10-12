@@ -728,7 +728,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1330676903
 RectTransform:
   m_ObjectHideFlags: 0
@@ -883,7 +883,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dialogueBox: {fileID: 1786872123}
   dialogueText: {fileID: 685400521}
-  lettersPerSecond: 7
+  lettersPerSecond: 20
   currentLine: 0
   dialogueOptionAsset: {fileID: 7245623975150922130, guid: f4e6e5da8fb533a4d963be1535ba0bb1, type: 3}
 --- !u!1001 &1983294896

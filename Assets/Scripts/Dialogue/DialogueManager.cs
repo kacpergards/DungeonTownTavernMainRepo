@@ -183,6 +183,11 @@ public class DialogueManager : MonoBehaviour
         //Display the options, adding them to the available list
         foreach (DialogueOption option in line.dialogueOptions)
         {
+            if (option.optionText is null || option.action is null){
+                Debug.Log("Option text or option action has not been assigned in the Inspector. Skipping.");
+                continue;
+            }
+
             //Create the option
             GameObject instantiatedDialogueOptionGO = Instantiate(dialogueOptionAsset, dialogueOptionsParentTransform);
             //Set the optionText
