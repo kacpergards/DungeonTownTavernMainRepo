@@ -18,8 +18,9 @@ public class PlayerController : MonoBehaviour
     public Animator animator;
     public Terrain terrain;
 
-    
 
+
+    public float calculatedSpeed = 0f;
     public float checkDistance = 1f;
     private Vector3 previousPosition;
     public Vector3 direction;
@@ -178,19 +179,23 @@ public class PlayerController : MonoBehaviour
 
     private void HandleMovementAndCalculateDirection()
     {
+        calculatedSpeed = moveInput.magnitude * speed;
+
+        animator.SetFloat("MoveX", moveInput.x);
+        animator.SetFloat("MoveY", moveInput.y);
+        animator.SetFloat("Speed", calculatedSpeed);
+
         if (moveInput != Vector2.zero)
         {
             previousPosition = transform.position;
-            animator.SetFloat("MoveX", moveInput.x);
-            animator.SetFloat("MoveY", moveInput.y);
             applyMovement(moveInput);
+            direction = (transform.position - previousPosition).normalized;
+        } else
+        {
+            animator.SetFloat("IdleX", direction.x);
+            animator.SetFloat("IdleY", direction.z); //stupid unity directions
         }
-        else
-        { //i.e. Player is not moving
-            animator.SetFloat("MoveX", 0);
-            animator.SetFloat("MoveY", 0);
-        }
-        direction = (transform.position - previousPosition).normalized;
+
     }
     void applyMovement(Vector2 movement)
     {
