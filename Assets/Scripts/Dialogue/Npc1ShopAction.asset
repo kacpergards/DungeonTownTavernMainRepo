@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 23ab3ba9b0107bb418f3fc504ca41bab, type: 3}
   m_Name: Npc1ShopAction
   m_EditorClassIdentifier: 
-  ShopName: Npc1Shop
+  ShopName: A Shop This value isn't used yet lol
