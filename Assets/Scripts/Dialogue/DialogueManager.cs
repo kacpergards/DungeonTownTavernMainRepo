@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
-using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
 
@@ -15,10 +14,16 @@ public class DialogueManager : MonoBehaviour
     [SerializeField] int currentLine;
     [SerializeField] GameObject dialogueOptionAsset;
 
+    [SerializeField] GameObject player;
+
+    public MenuManager menuManager; //TODO refactor? - dialogue actions need a reference to the menuManager
+
     Dialogue dialogue;
+    
     private bool inOptions = false;
     private List<GameObject> availableOptions;
     private List<DialogueAction> availableOptionsActions;
+    private DialogueContext dialogueContext;
     private int selectedOptionIndex;
     private Coroutine typeCoroutine;
 
@@ -84,9 +89,10 @@ public class DialogueManager : MonoBehaviour
 
     // Invoked by dialogue initiator - NPC - Interact() function
     // Therefore, as we switch action sets immediately, this cannot be called while a dialogue is in progress
-    public IEnumerator ShowDialogue(Dialogue dialogue)
+    public IEnumerator ShowDialogue(GameObject npc, Dialogue dialogue)
     {
         yield return new WaitForEndOfFrame();
+        dialogueContext = new DialogueContext(npc, player, dialogue);
 
         OnShowDialogue?.Invoke();
 
@@ -140,7 +146,7 @@ public class DialogueManager : MonoBehaviour
     public void HandleOptionSelectProceed()
     {
         //Call execute on currently selected option
-        availableOptionsActions[selectedOptionIndex].Execute(this);
+        availableOptionsActions[selectedOptionIndex].Execute(this,dialogueContext);
     }
     public void SelectOption()
     {

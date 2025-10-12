@@ -9,6 +9,6 @@ public class NPCController : MonoBehaviour, Interactable
     {
         //Warn: This means there can only ever be one dialogueManager instance - or this will break.
         //Not necessarily a bad thing, but keep in mind when designing more complex dialogues in the future.
-        StartCoroutine(DialogueManager.Instance.ShowDialogue(dialogue));
+        StartCoroutine(DialogueManager.Instance.ShowDialogue(gameObject, dialogue));
     }
 }

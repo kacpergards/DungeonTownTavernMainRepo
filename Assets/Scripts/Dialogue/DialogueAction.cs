@@ -5,5 +5,5 @@ using UnityEngine;
 
 public abstract class DialogueAction : ScriptableObject
 {
-    public abstract void Execute(DialogueManager manager);
+    public abstract void Execute(DialogueManager manager, DialogueContext context);
 }

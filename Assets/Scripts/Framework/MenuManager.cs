@@ -7,9 +7,16 @@ using UnityEngine.InputSystem;
 
 public class MenuManager : MonoBehaviour
 {
+
+    public GameObject shopPrefab;
+
     public GameObject inventoryUI;
+    public GameObject activeShop;
     public event Action OnShowMenu;
     public event Action OnHideMenu;
+
+    private bool inInventory = false;
+    private bool inShop = false;
 
 
     public void SubscribeToEvents(PlayerInputActions inputActions)
@@ -17,6 +24,7 @@ public class MenuManager : MonoBehaviour
         inputActions.PlayerWorldActions.menuOpen.performed += OnMenuOpenInput; //Further reason to create InputManager...
         inputActions.PlayerDialogueActions.menuOpen.performed += OnMenuOpenInput; //HMMMMM 🤔🤔🤔🤔
         inputActions.PlayerMenuActions.close.performed += OnCloseInput;
+        inputActions.PlayerMenuActions.close.performed += HideShop;
     }
 
     void Start()
@@ -36,12 +44,41 @@ public class MenuManager : MonoBehaviour
 
     void ShowMenu()
     {
+        inventoryUI.transform.Find("Inventory").GetComponent<InventoryUI>().Initialize();
         inventoryUI.SetActive(true);
+        inInventory = true;
         OnShowMenu?.Invoke(); //Player controller subscribes to this, to switch action map.
     }
     void HideMenu()
     {
-        inventoryUI.SetActive(false);
-        OnHideMenu?.Invoke(); //same as above
+        if (inInventory)
+        {            
+            inventoryUI.SetActive(false);
+            inInventory = false;
+            OnHideMenu?.Invoke(); //same as above
+        }
+    }
+
+    public void ShowShop(DialogueContext context)
+    {
+        inShop = true;
+        OnShowMenu?.Invoke();
+        //Instantiate Shop prefab
+        activeShop = Instantiate(shopPrefab, transform);
+        InventoryUI inv = activeShop.transform.Find("Inventory").GetComponent<InventoryUI>();
+        inv.inventory = context.NPCInventory;
+        inv.Initialize();
+        
+    }
+    
+    void HideShop(InputAction.CallbackContext ctx)
+    {
+        if (inShop)
+        {
+            inShop = false;
+            OnHideMenu?.Invoke();
+            //Destroy shop prefab
+            Destroy(activeShop);
+        }   
     }
 }

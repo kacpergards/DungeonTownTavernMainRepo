@@ -10085,6 +10085,7 @@ GameObject:
   - component: {fileID: 512812462}
   - component: {fileID: 512812466}
   - component: {fileID: 512812467}
+  - component: {fileID: 512812469}
   m_Layer: 8
   m_Name: NPC_1
   m_TagString: NPC
@@ -10262,6 +10263,26 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &512812469
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 512812461}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 73cdb50982767ca43b45d96ea85a2b66, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  items:
+  - item: {fileID: 11400000, guid: 10e24c755ddc96c4181c7bbc256d67bd, type: 2}
+    quantity: 2
+  - item: {fileID: 11400000, guid: bc591c7948eeca14c89d33403b9a6473, type: 2}
+    quantity: 2
+  - item: {fileID: 11400000, guid: d85831d055d94b644bc5bd18b9d190a3, type: 2}
+    quantity: 5
+  gold: 100
 --- !u!1 &705324333
 GameObject:
   m_ObjectHideFlags: 0

@@ -14,10 +14,11 @@ Dialogue:
         - Therefore, this needs to be done... at some point. Not an immediate priority until things start looking like an actual game.
 
 Shopping:
-    - Shop menu
-        - Shop inventory - should be the shopkeep NPC inventory? Or separate?
-    - Buying
-    - Selling
+    - Selling (Code is there, reuses buy logic but opposite buyer and seller, Ui is not created for it)
+    - Possible refactor of some of this
+        - It's not as bad as I thought it was while writing it, but there should have been a ShopManager class rather than trying to reuse components with conditionals.
+        - Not a priority, current implementation works and is extensible - but is a bit messy. I'd rather have all the logic in one place than spread out... I think.
+        - Need to work it out, but I think dialogue actions should be firing events that the e.g. menuManager can listen on. Not sure how to listen though as it's injected by the Dialogue
 
 NPCs:
     - Movement

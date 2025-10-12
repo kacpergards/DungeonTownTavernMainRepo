@@ -6,7 +6,8 @@ public class BaseItem : ScriptableObject
     public string itemName;
     public Sprite icon;
     public string description;
-    public int maxStackSize = 1;
+    public int maxStackSize = 999;
+    public int baseValue = 1;
 
     public ItemAction[] actions;
 }

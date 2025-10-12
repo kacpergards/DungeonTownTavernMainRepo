@@ -3,6 +3,8 @@ using UnityEngine.UI;
 
 public class InventoryUI : MonoBehaviour
 {
+    public bool isShop;
+
     public Inventory inventory;
     public GameObject slotPrefab;
     public Transform slotParent; // Panel where slots get added
@@ -10,22 +12,21 @@ public class InventoryUI : MonoBehaviour
     public Canvas menu;
 
     public Canvas currentContextMenu;
+    public BuySellPanelHandler buySellPanel;
 
     private void OnEnable()
     {
-        inventory.onInventoryChangedCallback += RefreshUI;
-        RefreshUI();
 
-        //var grid = GetComponent<GridLayoutGroup>();
-        //grid.startAxis = GridLayoutGroup.Axis.Horizontal;
-        //grid.childAlignment = TextAnchor.UpperLeft;
-        //grid.constraint = GridLayoutGroup.Constraint.FixedColumnCount;
-        //grid.constraintCount = 5;
     }
 
     private void OnDisable()
     {
         inventory.onInventoryChangedCallback -= RefreshUI;
+    }
+    public void Initialize()
+    {
+        inventory.onInventoryChangedCallback += RefreshUI;
+        RefreshUI();
     }
 
     public void RefreshUI()
@@ -43,11 +44,22 @@ public class InventoryUI : MonoBehaviour
         }
 
         // Add slots for each item
-        for (int i = 0; i < inventory.items.Count; i++)
+        foreach(InventorySlot slot in inventory.items)
         {
             var slotGO = Instantiate(slotPrefab, slotParent);
             var slotUI = slotGO.GetComponent<InventorySlotUI>();
-            slotUI.Setup(inventory, i, player, menu, this);
+            slotUI.Setup(inventory, slot, player, menu, this);
         }
+    }
+
+    public void DisplayItemInBuySellPanel(InventorySlot invSlot)
+    {
+        if (buySellPanel is null)
+        {
+            Debug.LogError("Tried to access buySellPanel but it's null! Called from outside a shop?");
+            return;
+        }
+        buySellPanel.SetItem(inventory, invSlot);
+
     }
 }

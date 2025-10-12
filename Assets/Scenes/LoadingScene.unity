@@ -570,7 +570,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 163994331072240937, guid: 86eb4194aafcccf46bd5f9fda11ba26a, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0.9958754
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 163994331072240937, guid: 86eb4194aafcccf46bd5f9fda11ba26a, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0.98313636
       objectReference: {fileID: 0}
     - target: {fileID: 2766639296699571341, guid: 86eb4194aafcccf46bd5f9fda11ba26a, type: 3}
       propertyPath: player
@@ -590,7 +594,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5352284563543919492, guid: 86eb4194aafcccf46bd5f9fda11ba26a, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 2.6407597
+      value: -0.00024414062
       objectReference: {fileID: 0}
     - target: {fileID: 5529041989023542261, guid: 86eb4194aafcccf46bd5f9fda11ba26a, type: 3}
       propertyPath: m_Horizontal
@@ -868,7 +872,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 952e264168c7bd241ac5966381e650e3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  shopPrefab: {fileID: 5811710845005759500, guid: a89678187f1972943a6a1c14b88cac44, type: 3}
   inventoryUI: {fileID: 1417951805}
+  activeShop: {fileID: 0}
 --- !u!114 &1840301860
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -886,6 +892,7 @@ MonoBehaviour:
   lettersPerSecond: 20
   currentLine: 0
   dialogueOptionAsset: {fileID: 7245623975150922130, guid: f4e6e5da8fb533a4d963be1535ba0bb1, type: 3}
+  menuManager: {fileID: 1840301859}
 --- !u!1001 &1983294896
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -971,8 +978,12 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9205642476058544118, guid: 00ec1075d2cc80c44aad25cc431b9064, type: 3}
+      propertyPath: gold
+      value: 2000
+      objectReference: {fileID: 0}
+    - target: {fileID: 9205642476058544118, guid: 00ec1075d2cc80c44aad25cc431b9064, type: 3}
       propertyPath: items.Array.size
-      value: 10
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 9205642476058544118, guid: 00ec1075d2cc80c44aad25cc431b9064, type: 3}
       propertyPath: items.Array.data[0].item
