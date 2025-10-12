@@ -59,6 +59,8 @@ public class SceneTransitionController : MonoBehaviour
         if (firstTimeLoad && SceneManager.GetActiveScene().name != "LoadingScene")
         {
             firstTimeLoad = false;
+            player = GameObject.Find("Player");
+            player.transform.position = GameObject.Find("PlayerSpawn").transform.position;
         }
 
 
